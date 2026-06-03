@@ -858,15 +858,17 @@ button {
   }
 
   .sidebar {
-    position: absolute;
-    top: var(--ticker-height);
+    position: fixed;
+    top: 0;
+    bottom: 0;
     left: 0;
     z-index: 30;
     display: flex;
     width: var(--sidebar-width);
-    min-height: calc(100vh - var(--ticker-height));
+    min-height: 100vh;
+    overflow-y: auto;
     flex-direction: column;
-    padding: 28px 16px 18px;
+    padding: calc(var(--ticker-height) + 28px) 16px 18px;
     border-right: 2px solid var(--outline-soft);
     background: var(--surface);
   }
