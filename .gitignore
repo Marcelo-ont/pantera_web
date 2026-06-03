@@ -19,6 +19,7 @@ pnpm-debug.log*
 # Build output
 dist/
 build/
+public/
 .cache/
 
 # Local environment and secrets

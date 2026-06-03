@@ -21,3 +21,9 @@ La funcion usa `/fixtures?live=all` con `timezone`, guarda cache en memoria para
 1. Llena `.env` con tu llave real.
 2. Ejecuta `npm run dev` desde la raiz del proyecto.
 3. Abre `http://localhost:3000`.
+
+## Deploy en Vercel
+
+Vercel ejecuta `npm run build`, copia el frontend a `public/` y sirve ese directorio como salida estatica. La carpeta `api/` se despliega como Vercel Functions.
+
+No subas `.env` al repositorio. En Vercel configura `FOOTBALL_API_KEY` en Project Settings > Environment Variables y haz redeploy.
