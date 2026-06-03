@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import handler from "./api/partidos.js";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.join(rootDir, "public");
 const port = Number(process.env.PORT || 3000);
 const host = process.env.HOST || "127.0.0.1";
 
@@ -21,9 +22,10 @@ const mimeTypes = {
 };
 
 function loadEnv() {
-  const envPath = path.join(rootDir, ".env");
+  const envPath = [path.join(rootDir, ".env"), path.join(rootDir, "..", ".env")]
+    .find((filePath) => existsSync(filePath));
 
-  if (!existsSync(envPath)) {
+  if (!envPath) {
     return;
   }
 
@@ -53,8 +55,8 @@ function loadEnv() {
 
 function getStaticFilePath(urlPathname) {
   const routePath = urlPathname === "/" ? "/index.html" : urlPathname;
-  const filePath = path.normalize(path.join(rootDir, routePath));
-  const relativePath = path.relative(rootDir, filePath);
+  const filePath = path.normalize(path.join(publicDir, routePath));
+  const relativePath = path.relative(publicDir, filePath);
 
   if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
     return null;

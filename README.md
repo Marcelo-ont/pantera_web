@@ -2,6 +2,8 @@
 
 Pagina sencilla para consultar partidos en vivo desde API-FOOTBALL en Vercel.
 
+El proyecto listo para Vercel esta dentro de `vercel-app/`.
+
 ## Variables de entorno
 
 Configura la misma variable en local y en Vercel:
@@ -18,12 +20,15 @@ La funcion usa `/fixtures?live=all` con `timezone`, guarda cache en memoria para
 
 ## Desarrollo local
 
-1. Llena `.env` con tu llave real.
-2. Ejecuta `npm run dev` desde la raiz del proyecto.
-3. Abre `http://localhost:3000`.
+1. Entra a `vercel-app/`.
+2. Llena `.env` con tu llave real.
+3. Ejecuta `npm run dev`.
+4. Abre `http://localhost:3000`.
 
 ## Deploy en Vercel
 
-Vercel ejecuta `npm run build`, copia el frontend a `public/` y sirve ese directorio como salida estatica. La carpeta `api/` se despliega como Vercel Functions.
+En Vercel configura Root Directory como `vercel-app`.
+
+Vercel ejecuta `npm run build`, sirve `public/` como salida estatica y despliega `api/` como Vercel Functions.
 
 No subas `.env` al repositorio. En Vercel configura `FOOTBALL_API_KEY` en Project Settings > Environment Variables y haz redeploy.
