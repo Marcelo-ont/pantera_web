@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GOALMASTER | Elite Football Statistics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:wght@400;500;700&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#410001",
+                    "surface-container-highest": "#e5e2e1",
+                    "surface-tint": "#465c97",
+                    "secondary-fixed": "#ffdad5",
+                    "tertiary-container": "#4a4432",
+                    "inverse-primary": "#b2c5ff",
+                    "primary": "#112b63",
+                    "outline-variant": "#c5c6d1",
+                    "outline": "#757781",
+                    "surface-container-low": "#f6f3f2",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "on-primary-fixed": "#001848",
+                    "on-secondary-fixed-variant": "#930007",
+                    "on-background": "#1c1b1b",
+                    "surface": "#fcf9f8",
+                    "surface-bright": "#fcf9f8",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-fixed": "#ece2c9",
+                    "secondary-fixed-dim": "#ffb4aa",
+                    "on-tertiary-container": "#bab19a",
+                    "on-primary-container": "#9ab0f1",
+                    "background": "#fcf9f8",
+                    "on-surface": "#1c1b1b",
+                    "on-tertiary-fixed-variant": "#4c4634",
+                    "surface-container-high": "#eae7e7",
+                    "inverse-surface": "#313030",
+                    "secondary": "#b8201b",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#5c0002",
+                    "on-primary-fixed-variant": "#2d447d",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f3f0ef",
+                    "surface-container": "#f0eded",
+                    "primary-container": "#2b427b",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e5e2e1",
+                    "on-tertiary-fixed": "#201b0c",
+                    "secondary-container": "#ff5446",
+                    "on-error": "#ffffff",
+                    "tertiary": "#332e1d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "margin": "24px",
+                    "gutter": "16px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "stat-value": ["Anton"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-lg": ["Anton"],
+                    "headline-lg-mobile": ["Anton"],
+                    "headline-display": ["Anton"],
+                    "body-md": ["Archivo Narrow"],
+                    "body-lg": ["Archivo Narrow"]
+            },
+            "fontSize": {
+                    "stat-value": ["48px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "headline-display": ["64px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .hard-shadow { box-shadow: 4px 4px 0px 0px rgba(17, 43, 99, 1); }
+        .hard-shadow-hover:hover { box-shadow: 6px 6px 0px 0px rgba(184, 32, 27, 1); transform: translate(-2px, -2px); }
+        .stadium-bar { background: linear-gradient(90deg, #112b63 0%, #112b63 70%, transparent 70%, transparent 100%); background-size: 10px 100%; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .ticker-scroll { animation: ticker 40s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Top Scoreboard Ticker -->
+<div class="w-full bg-primary overflow-hidden border-b-2 border-secondary h-12 flex items-center z-[60] relative">
+<div class="flex whitespace-nowrap ticker-scroll items-center gap-12 px-4">
+<!-- Score Items Repeat for loop -->
+<div class="flex items-center gap-4 text-on-primary font-label-caps text-label-caps">
+<span class="text-secondary">LIVE</span>
+<span>MAD 2 - 1 BAR</span>
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<span class="opacity-70">LALIGA EA SPORTS</span>
+</div>
+<div class="flex items-center gap-4 text-on-primary font-label-caps text-label-caps border-l border-on-primary/20 pl-8">
+<span class="text-secondary">LIVE</span>
+<span>MCI 3 - 0 ARS</span>
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<span class="opacity-70">PREMIER LEAGUE</span>
+</div>
+<div class="flex items-center gap-4 text-on-primary font-label-caps text-label-caps border-l border-on-primary/20 pl-8">
+<span>INT 0 - 0 JUV</span>
+<span class="opacity-70">SERIE A</span>
+</div>
+<div class="flex items-center gap-4 text-on-primary font-label-caps text-label-caps border-l border-on-primary/20 pl-8">
+<span class="text-secondary">LIVE</span>
+<span>BAY 1 - 1 BVB</span>
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<span class="opacity-70">BUNDESLIGA</span>
+</div>
+<!-- Duplicated for seamless scroll -->
+<div class="flex items-center gap-4 text-on-primary font-label-caps text-label-caps border-l border-on-primary/20 pl-8">
+<span class="text-secondary">LIVE</span>
+<span>MAD 2 - 1 BAR</span>
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<span class="opacity-70">LALIGA EA SPORTS</span>
+</div>
+<div class="flex items-center gap-4 text-on-primary font-label-caps text-label-caps border-l border-on-primary/20 pl-8">
+<span class="text-secondary">LIVE</span>
+<span>MCI 3 - 0 ARS</span>
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<span class="opacity-70">PREMIER LEAGUE</span>
+</div>
+</div>
+</div>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface border-r-2 border-outline-variant flex-col p-4 z-50">
+<div class="mb-10 pt-16">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tighter">GOALMASTER</h1>
+<p class="font-label-caps text-label-caps text-secondary">Elite Analysis</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 p-3 bg-primary text-on-primary font-bold rounded-xl active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-caps text-label-caps">Home</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high hover:shadow-[4px_4px_0px_0px_rgba(17,43,99,1)] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-caps text-label-caps">Competitions</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high hover:shadow-[4px_4px_0px_0px_rgba(17,43,99,1)] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="live_tv">live_tv</span>
+<span class="font-label-caps text-label-caps">Live Center</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high hover:shadow-[4px_4px_0px_0px_rgba(17,43,99,1)] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">Stats Lab</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-high hover:shadow-[4px_4px_0px_0px_rgba(17,43,99,1)] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-2">
+<button class="w-full py-3 bg-secondary text-on-primary font-headline-lg text-body-md uppercase italic hover:brightness-110 transition-all">Go Premium</button>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-primary dark:bg-primary-container text-on-primary flex justify-between items-center w-full px-margin py-4 border-b-2 border-secondary sticky top-0 z-40">
+<div class="flex items-center gap-8">
+<span class="font-headline-lg text-headline-lg text-on-primary italic uppercase">GOALMASTER</span>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-on-primary border-b-4 border-secondary pb-1" href="#">Leagues</a>
+<a class="font-label-caps text-label-caps text-on-primary-container/70 hover:text-secondary transition-colors duration-200" href="#">Live Scores</a>
+<a class="font-label-caps text-label-caps text-on-primary-container/70 hover:text-secondary transition-colors duration-200" href="#">News</a>
+<a class="font-label-caps text-label-caps text-on-primary-container/70 hover:text-secondary transition-colors duration-200" href="#">Transfers</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="bg-primary-container border-2 border-outline-variant text-on-primary px-4 py-1.5 focus:border-secondary outline-none rounded-none text-body-md" placeholder="Search data..." type="text"/>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative bg-primary overflow-hidden h-[500px] flex items-center px-margin border-b-8 border-secondary">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-secondary via-transparent to-transparent"></div>
+<div class="grid grid-cols-12 gap-gutter w-full max-w-container-max mx-auto z-10 relative">
+<div class="col-span-12 md:col-span-7 flex flex-col justify-center">
+<span class="font-label-caps text-label-caps text-secondary mb-4 uppercase tracking-[0.2em]">Data Engine V.4.0</span>
+<h2 class="font-headline-display text-on-primary text-headline-display leading-[0.9] mb-8 uppercase italic">Domina el Campo con Estadísticas de Élite</h2>
+<div class="flex gap-4">
+<button class="px-8 py-4 bg-secondary text-on-primary font-headline-lg text-body-lg uppercase transition-all hard-shadow active:translate-y-1">Start Analysis</button>
+<button class="px-8 py-4 border-2 border-on-primary text-on-primary font-headline-lg text-body-lg uppercase hover:bg-on-primary hover:text-primary transition-all">Browse Leagues</button>
+</div>
+</div>
+<div class="hidden md:flex col-span-5 justify-end items-end relative h-full">
+<img alt="Pantera Mascot" class="h-[120%] object-contain drop-shadow-[0_0_50px_rgba(184,32,27,0.4)] transform translate-y-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlyR3CvomqUK53ejiCXB5hUjjCt4QfELpDd_LWYtol7M86w6XgILQf9QC11qSM_Mi7jTXmMVR6AW6veGHjjulMbPuYX2mRxdZ5OXqG1TFs6yfWyjokFSoLCAFfOuKN7-gO0x-ffNx1UHtuU1rHN8fIhJK8qoR9U1T3zu6eVSaDJqCDP-yue14Fu7l1kg2ntpKUaiA8yUCn5URoDHbbYsU-wJ546eh6_kt7yZHf8RzUalZIDrQKDN4xSGcTIs6nVtUY6nTWZ-5M4vuV"/>
+</div>
+</div>
+</section>
+<!-- Dynamic Content Grid -->
+<div class="px-margin py-12 max-w-container-max mx-auto">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Live Center (Left/Center) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary" data-icon="live_tv">live_tv</span>
+<h3 class="font-headline-lg text-headline-lg text-primary italic uppercase">Live Center</h3>
+</div>
+<a class="font-label-caps text-label-caps text-primary underline" href="#">View All Matches</a>
+</div>
+<!-- Match Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Match Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant p-6 hard-shadow-hover transition-all">
+<div class="flex justify-between items-center mb-6">
+<span class="bg-secondary text-on-primary px-3 py-1 font-label-caps text-label-caps italic">84'</span>
+<span class="font-label-caps text-label-caps text-outline uppercase">LaLiga</span>
+</div>
+<div class="flex items-center justify-between gap-4 mb-8">
+<div class="text-center flex-1">
+<div class="w-16 h-16 mx-auto bg-surface-container-high rounded-full mb-2 flex items-center justify-center border-2 border-primary">
+<img alt="Real Madrid" class="w-10 h-10 object-contain" data-alt="Official crest of a professional football club, featuring classic royal elements with a clean, high-contrast graphic design in navy and gold colors, presented on a minimalist studio background with sports lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD0S47a-d5vmzXezgs-VNd_uLav-SueXQRhrDN4H8S0XJgLCjQSYiCBS1yiC4LxOLgTSIipboUX-x1yHbtpDhAyNBEavrKEbxEYmjr2YzJaoKIYZrg8t-Gb0RgVs3goX8CwLk1ZkMrsLb3T5qIVwUc1sDdc2lz7NPZndl03WFkWuf1gGqYWfLOUDPxYH4WIPu_qriRKK8tR-RaYdsnTmH2n59xAaoYcOO3EAU3iKgvoOuoj7pTi9MI_5ozFHiqfst0KNcfWUW0Ejvy"/>
+</div>
+<span class="font-label-caps text-label-caps text-primary">MADRID</span>
+</div>
+<div class="font-stat-value text-stat-value text-primary">2 - 1</div>
+<div class="text-center flex-1">
+<div class="w-16 h-16 mx-auto bg-surface-container-high rounded-full mb-2 flex items-center justify-center border-2 border-secondary">
+<img alt="FC Barcelona" class="w-10 h-10 object-contain" data-alt="Official crest of a top-tier football club, utilizing a vibrant red and blue color palette in a structured heraldic shield design, displayed as a sharp digital asset with high-definition details against a clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByQjeBks1TgrUOumOws-ZHWzD-cZmHu3WCi5x2HwcIYoo1rsRTFPHPtNvGmRnqsha9aZnDBpGcC0LX5SJngGgQ0GXsU7XQDxSqAGpETywkJEXg2cz9LeUZqXy2W2egCvwdz7_a9KxoPvkXtT5n7FdJ6CkNKr6Tj0M1fQlhCrYmQUf-hw3wBpLlphvWUGMcP4mgzN27X_AO2qIxt-iPi62CMCNCv7uNx4NsFlnCl5AtdLeMvPI3_Z9Cg69efLW1HD3ElkNq6MudQa61"/>
+</div>
+<span class="font-label-caps text-label-caps text-primary">BARCELONA</span>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-outline-variant">
+<div class="flex justify-between items-center text-label-caps font-label-caps">
+<span class="text-outline">Possession</span>
+<span class="text-primary">54% - 46%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 flex">
+<div class="bg-primary h-full" style="width: 54%"></div>
+<div class="bg-secondary h-full" style="width: 46%"></div>
+</div>
+<div class="flex justify-between items-center text-label-caps font-label-caps pt-2">
+<span class="text-outline">xG</span>
+<span class="text-primary">2.41 - 1.18</span>
+</div>
+</div>
+</div>
+<!-- Match Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant p-6 hard-shadow-hover transition-all">
+<div class="flex justify-between items-center mb-6">
+<span class="bg-primary text-on-primary px-3 py-1 font-label-caps text-label-caps italic">FT</span>
+<span class="font-label-caps text-label-caps text-outline uppercase">Premier League</span>
+</div>
+<div class="flex items-center justify-between gap-4 mb-8">
+<div class="text-center flex-1">
+<div class="w-16 h-16 mx-auto bg-surface-container-high rounded-full mb-2 flex items-center justify-center border-2 border-primary">
+<img alt="Man City" class="w-10 h-10 object-contain" data-alt="Symbolic digital logo for a professional sports organization, showcasing elegant sky-blue and white typography and geometric symbols, presented as a high-fidelity vector style image in a professional sports broadcast context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVMpO5OJBhRMIUqnYbNfMVj3AM6yZ1U-hhenV3TYiL0Bn4ZlX7rB4Me83ix2NjbQVPWzv44IT_GkbdB7WtGQ3dnMd790ftUpsw962-dCsWz73Y0XIFy02A3mvaCHIXoqK7zT4Apd5m7krN3TrKs_VytrN3dnzQz3BWmsWoSln80TDoV8LAbIJNC29rvWl_TU9wbZ1LHXl6iEIioJRec3Ra3bBHtS_oF7zog45muk8fU3JhCB0gj2Qd-9dbYrlLMC-KCi1wxlPptRYp"/>
+</div>
+<span class="font-label-caps text-label-caps text-primary">CITY</span>
+</div>
+<div class="font-stat-value text-stat-value text-primary">3 - 0</div>
+<div class="text-center flex-1">
+<div class="w-16 h-16 mx-auto bg-surface-container-high rounded-full mb-2 flex items-center justify-center border-2 border-outline">
+<img alt="Arsenal" class="w-10 h-10 object-contain" data-alt="Logo of a major athletic team featuring a traditional cannon and crest icon in bold red and white, rendered with sharp edges and a modern corporate aesthetic suitable for high-end sports analytics platforms." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcPnESi-BogPYtJMY6CkMIfwMMOoIuOCsupjH1pppC-xdSqU3ymGr8pB1S_ztSnZ861uvksZVnnZ1vhY_B4eLrnZ0QWlpz4ikZ9Ce__Dux9nS2Dc1acAgtazDvQkW88KpIuM0KYfwEuC4AyKm0bxTUrXcIM2Ehl8kcgOo5_RaxGhtFSjJ6MXhQM9CqoUJ6Up5R10nBwKVD-BNfL2SBlTSntKCMMKAjsXB4gWZHfg1luPHsV4Wa52kthO1RxG5IpqEHyrLrRCdoWs62"/>
+</div>
+<span class="font-label-caps text-label-caps text-primary">ARSENAL</span>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-outline-variant">
+<div class="flex justify-between items-center text-label-caps font-label-caps">
+<span class="text-outline">Possession</span>
+<span class="text-primary">68% - 32%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 flex">
+<div class="bg-primary h-full" style="width: 68%"></div>
+<div class="bg-secondary h-full" style="width: 32%"></div>
+</div>
+<div class="flex justify-between items-center text-label-caps font-label-caps pt-2">
+<span class="text-outline">xG</span>
+<span class="text-primary">3.12 - 0.45</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Player Section (Bento Style) -->
+<div class="mt-12 bg-primary p-8 border-l-8 border-secondary relative overflow-hidden">
+<div class="absolute right-0 top-0 w-1/2 h-full opacity-20 pointer-events-none bg-[url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&amp;fit=crop&amp;q=80&amp;w=1000')] bg-cover bg-center" data-alt="A cinematic, high-contrast action shot of a professional football player in a navy blue jersey mid-sprint under stadium floodlights. The atmosphere is energetic and elite, utilizing a sophisticated color palette of deep navy, vibrant red accents, and bright white highlights. The lighting is dramatic, accentuating the athlete's motion and the textures of the pitch."></div>
+<div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<span class="bg-secondary text-on-primary px-3 py-1 font-label-caps text-label-caps mb-4 inline-block">PLAYER OF THE WEEK</span>
+<h4 class="font-headline-display text-on-primary text-[48px] leading-tight mb-2 uppercase">Lamine Yamal</h4>
+<p class="font-body-lg text-on-primary-container mb-6">Unprecedented efficiency in the final third. 17 years old, playing with the wisdom of a veteran.</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-primary-container p-4 border border-on-primary/20">
+<span class="block text-secondary font-stat-value text-[32px]">0.92</span>
+<span class="font-label-caps text-label-caps text-on-primary/60">xG Per 90</span>
+</div>
+<div class="bg-primary-container p-4 border border-on-primary/20">
+<span class="block text-secondary font-stat-value text-[32px]">94%</span>
+<span class="font-label-caps text-label-caps text-on-primary/60">Pass Acc.</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center">
+<div class="w-full aspect-video bg-black/40 border-2 border-secondary p-4 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-primary">HEATMAP ANALYSIS</span>
+<div class="flex-1 flex items-center justify-center">
+<!-- Mock Heatmap -->
+<div class="w-48 h-32 bg-[radial-gradient(circle_at_70%_50%,_rgba(184,32,27,0.8),_transparent_70%)] border border-on-primary/30 relative">
+<div class="absolute inset-0 border-r border-on-primary/20 w-1/2"></div>
+<div class="absolute inset-y-0 right-0 w-8 h-16 border border-on-primary/20 my-auto"></div>
+</div>
+</div>
+<button class="w-full py-2 bg-on-primary text-primary font-label-caps text-label-caps uppercase hover:bg-secondary hover:text-white transition-colors">Full Report</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Leagues Sidebar (Right) -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<div class="flex items-center gap-4 mb-2">
+<span class="material-symbols-outlined text-secondary" data-icon="emoji_events">emoji_events</span>
+<h3 class="font-headline-lg text-headline-lg text-primary italic uppercase">Top Leagues</h3>
+</div>
+<!-- League Standings Card -->
+<div class="bg-surface-container-low border border-outline-variant hard-shadow">
+<div class="flex bg-primary p-4 gap-4 overflow-x-auto scrollbar-hide">
+<button class="px-4 py-2 bg-secondary text-on-primary font-label-caps text-label-caps uppercase whitespace-nowrap">La Liga</button>
+<button class="px-4 py-2 text-on-primary/60 font-label-caps text-label-caps uppercase whitespace-nowrap hover:text-on-primary transition-colors">Premier League</button>
+<button class="px-4 py-2 text-on-primary/60 font-label-caps text-label-caps uppercase whitespace-nowrap hover:text-on-primary transition-colors">UCL</button>
+</div>
+<table class="w-full text-left font-body-md">
+<thead class="bg-surface-container-high border-b border-outline-variant">
+<tr>
+<th class="p-3 font-label-caps text-label-caps text-primary">#</th>
+<th class="p-3 font-label-caps text-label-caps text-primary">Team</th>
+<th class="p-3 font-label-caps text-label-caps text-primary text-center">P</th>
+<th class="p-3 font-label-caps text-label-caps text-primary text-center">Pts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant hover:bg-surface-container-high/50">
+<td class="p-3 font-bold text-primary">1</td>
+<td class="p-3 flex items-center gap-3">
+<div class="w-6 h-6 bg-primary/10 rounded-full"></div>
+<span class="font-label-caps text-label-caps">Real Madrid</span>
+</td>
+<td class="p-3 text-center">31</td>
+<td class="p-3 text-center font-bold text-secondary">78</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-high/50 bg-secondary/5">
+<td class="p-3 font-bold text-primary">2</td>
+<td class="p-3 flex items-center gap-3">
+<div class="w-6 h-6 bg-primary/10 rounded-full"></div>
+<span class="font-label-caps text-label-caps">FC Barcelona</span>
+</td>
+<td class="p-3 text-center">31</td>
+<td class="p-3 text-center font-bold text-secondary">70</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-high/50">
+<td class="p-3 font-bold text-primary">3</td>
+<td class="p-3 flex items-center gap-3">
+<div class="w-6 h-6 bg-primary/10 rounded-full"></div>
+<span class="font-label-caps text-label-caps">Girona</span>
+</td>
+<td class="p-3 text-center">31</td>
+<td class="p-3 text-center font-bold text-secondary">65</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-high/50">
+<td class="p-3 font-bold text-primary">4</td>
+<td class="p-3 flex items-center gap-3">
+<div class="w-6 h-6 bg-primary/10 rounded-full"></div>
+<span class="font-label-caps text-label-caps">Atlético</span>
+</td>
+<td class="p-3 text-center">31</td>
+<td class="p-3 text-center font-bold text-secondary">61</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 bg-surface-container-high text-center">
+<a class="font-label-caps text-label-caps text-primary hover:text-secondary transition-colors" href="#">See Full Table</a>
+</div>
+</div>
+<!-- Market Insights Widget -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 hard-shadow">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+<h4 class="font-headline-lg text-body-lg uppercase italic font-bold">Market Values</h4>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/5 rounded flex items-center justify-center font-label-caps text-label-caps text-primary">MBP</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary">Mbappé</p>
+<p class="text-[10px] text-outline uppercase font-label-caps">Real Madrid</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-stat-value text-body-lg text-secondary">€180M</p>
+<p class="text-[10px] text-error font-bold">+5.2%</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/5 rounded flex items-center justify-center font-label-caps text-label-caps text-primary">HAL</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary">Haaland</p>
+<p class="text-[10px] text-outline uppercase font-label-caps">Man City</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-stat-value text-body-lg text-secondary">€180M</p>
+<p class="text-[10px] text-outline font-bold">0.0%</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-primary text-on-primary w-full px-margin py-12 mt-20 border-t-4 border-secondary">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-secondary italic mb-2 uppercase">GOALMASTER</h2>
+<p class="font-label-caps text-label-caps opacity-60">Professional Data Intelligence for the Global Game</p>
+</div>
+<div class="flex flex-wrap gap-8">
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-secondary">Network</span>
+<a class="font-body-md text-body-md opacity-70 hover:opacity-100 hover:text-secondary underline transition-all" href="#">API Access</a>
+<a class="font-body-md text-body-md opacity-70 hover:opacity-100 hover:text-secondary underline transition-all" href="#">Media Kit</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-secondary">Legal</span>
+<a class="font-body-md text-body-md opacity-70 hover:opacity-100 hover:text-secondary underline transition-all" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md opacity-70 hover:opacity-100 hover:text-secondary underline transition-all" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto mt-12 pt-8 border-t border-on-primary/10 text-center md:text-left">
+<p class="font-label-caps text-[10px] opacity-40">© 2024 GOALMASTER DATA SYSTEMS. ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+</main>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t-2 border-primary z-50 flex justify-around p-2">
+<a class="flex flex-col items-center p-2 text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-label-caps">Home</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="text-[10px] font-label-caps">Leagues</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="live_tv">live_tv</span>
+<span class="text-[10px] font-label-caps">Live</span>
+</a>
+<a class="flex flex-col items-center p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="text-[10px] font-label-caps">Stats</span>
+</a>
+</nav>
+<!-- Contextual FAB (Only for Home) -->
+<button class="fixed bottom-24 right-8 w-16 h-16 bg-secondary text-on-primary rounded-full shadow-2xl flex items-center justify-center md:bottom-12 z-50 active:scale-95 transition-transform hover:rotate-12">
+<span class="material-symbols-outlined text-[32px]" data-icon="add_chart">add_chart</span>
+</button>
+<script>
+        // Micro-interactions and subtle effects
+        document.querySelectorAll('.hard-shadow-hover').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential dynamic behavior like sound or particle effects
+            });
+        });
+
+        // Search Bar Toggle for mobile if needed
+        const searchInput = document.querySelector('input[type="text"]');
+        if(searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('border-secondary');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('border-secondary');
+            });
+        }
+    </script>
+</body></html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#112b63">
+  <title>Pantera Stats | Partidos en vivo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;500;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <div class="score-ticker" aria-label="Marcadores en vivo">
+    <div class="score-ticker__track" id="tickerTrack">
+      <div class="score-ticker__item">
+        <span class="score-ticker__live">EN VIVO</span>
+        <span>Loading...</span>
+        <span class="score-ticker__dot" aria-hidden="true"></span>
+        <span class="score-ticker__league">API-FOOTBALL</span>
+      </div>
+      <div class="score-ticker__item">
+        <span class="score-ticker__live">EN VIVO</span>
+        <span>Loading...</span>
+        <span class="score-ticker__dot" aria-hidden="true"></span>
+        <span class="score-ticker__league">RAPIDAPI</span>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar" aria-label="Navegacion principal">
+    <div class="sidebar__brand">
+      <strong>PANTERA STATS</strong>
+      <span>Analisis Elite</span>
+    </div>
+
+    <nav class="sidebar__nav" aria-label="Secciones">
+      <a class="sidebar__link sidebar__link--active" href="#inicio" aria-current="page">Inicio</a>
+      <a class="sidebar__link" href="#live-center">En Vivo</a>
+      <a class="sidebar__link" href="#data-panel">Analisis</a>
+      <a class="sidebar__link" href="#leagues-panel">Ligas</a>
+    </nav>
+
+    <div class="sidebar__footer">
+      <button class="sidebar__premium" type="button">Actualizar</button>
+      <span>API-Football v3</span>
+    </div>
+  </aside>
+
+  <main class="page-shell" id="inicio">
+    <header class="topbar">
+      <a class="topbar__brand" href="#inicio">PANTERA STATS</a>
+      <nav class="topbar__nav" aria-label="Navegacion superior">
+        <a href="#inicio" aria-current="page">Inicio</a>
+        <a href="#live-center">Marcadores</a>
+        <a href="#data-panel">Datos</a>
+        <a href="#leagues-panel">Ligas</a>
+      </nav>
+      <button class="button button--secondary" id="refreshBtn" type="button">
+        Actualizar
+      </button>
+    </header>
+
+    <nav class="mobile-nav" aria-label="Navegacion movil">
+      <a href="#inicio" aria-current="page">Inicio</a>
+      <a href="#live-center">En vivo</a>
+      <a href="#data-panel">Analisis</a>
+      <a href="#leagues-panel">Ligas</a>
+    </nav>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero__content">
+        <span class="label label--red">Motor de datos v3.0</span>
+        <h1 class="hero__title" id="page-title">
+          Marcadores en vivo con estadisticas de elite
+        </h1>
+        <p class="hero__subtitle">
+          Consulta partidos activos, marcador, logos y minuto desde API-Football.
+        </p>
+      </div>
+
+      <div class="hero__media">
+        <img class="hero__mascot" src="img/Pantera.png" alt="Mascota Pantera">
+      </div>
+    </section>
+
+    <div class="dashboard">
+      <section class="dashboard__main" id="live-center" aria-labelledby="live-title">
+        <div class="section-header">
+          <div class="section-header__title-group">
+            <span class="section-header__icon" aria-hidden="true"></span>
+            <h2 class="section-header__title" id="live-title">Centro en Vivo</h2>
+          </div>
+          <span class="section-header__meta" id="matchCount">Loading...</span>
+        </div>
+
+        <div class="live-content" id="content" aria-live="polite">
+          <div class="status-card">
+            <div class="loader" aria-hidden="true"></div>
+            <div>
+              <p class="status-card__title">Loading...</p>
+              <p class="status-card__text">Buscando partidos en vivo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="dashboard__side" id="data-panel" aria-label="Panel de datos">
+        <section class="panel">
+          <div class="panel__header">
+            <span class="label label--red">Resumen</span>
+            <h2 class="panel__title">Datos en Vivo</h2>
+          </div>
+
+          <div class="stats-grid" id="summaryStats">
+            <article class="stat-card">
+              <strong>0</strong>
+              <span>Partidos</span>
+            </article>
+            <article class="stat-card">
+              <strong>0</strong>
+              <span>Ligas</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel" id="leagues-panel">
+          <div class="panel__header panel__header--inline">
+            <h2 class="panel__title">Top Ligas</h2>
+            <span class="label">En vivo</span>
+          </div>
+
+          <div class="league-table" id="leagueTable">
+            <div class="league-table__row league-table__row--head">
+              <span>#</span>
+              <span>Liga</span>
+              <span>J</span>
+            </div>
+            <div class="league-table__row">
+              <span>1</span>
+              <span>Sin datos</span>
+              <span>0</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <div>
+        <strong>PANTERA STATS</strong>
+        <p>Inteligencia de datos para futbol en vivo.</p>
+      </div>
+      <a href="#inicio">Volver arriba</a>
+    </footer>
+  </main>
+
+  <noscript>
+    <p class="noscript-message">
+      Activa JavaScript para ver los partidos en vivo.
+    </p>
+  </noscript>
+</body>
+</html>
