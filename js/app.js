@@ -1,8 +1,6 @@
 "use strict";
 
-const API_KEY = "";
-const API_HOST = "v3.football.api-sports.io";
-const API_URL = "https://v3.football.api-sports.io/fixtures?live=all";
+const API_URL = "/api/partidos";
 
 const dom = {
   content: document.getElementById("content"),
@@ -26,8 +24,9 @@ const labels = {
   emptyTitle: "No hay partidos en vivo en este momento.",
   emptyText: "Vuelve a tocar actualizar para revisar otra vez.",
   errorTitle: "No se pudieron cargar los partidos.",
-  missingKey: "Pega tu API key de RapidAPI en la constante API_KEY.",
-  invalidKey: "La API respondio con un error. Revisa que tu API key sea correcta.",
+  localFileError: "Abre la pagina desde Vercel o ejecuta npm run dev. Al abrir index.html directo no existe /api/partidos.",
+  routeError: "La ruta /api/partidos no respondio. Revisa que estes usando Vercel o npm run dev.",
+  invalidKey: "La API respondio con un error. Revisa que FOOTBALL_API_KEY sea correcta.",
   networkError: "Hubo un problema de red. Revisa tu conexion e intenta otra vez."
 };
 
@@ -97,10 +96,10 @@ function renderLoading() {
   });
 }
 
-function renderEmpty() {
+function renderEmpty(meta = {}) {
   dom.matchCount.textContent = "0 partidos";
   renderTicker([]);
-  renderSummary([]);
+  renderSummary([], meta);
   renderLeagues([]);
 
   renderStatus({
@@ -262,7 +261,7 @@ function renderTicker(matches) {
         <span class="score-ticker__live">EN VIVO</span>
         <span>No hay partidos en vivo</span>
         <span class="score-ticker__dot" aria-hidden="true"></span>
-        <span class="score-ticker__league">RAPIDAPI</span>
+        <span class="score-ticker__league">API-FOOTBALL</span>
       </div>
     `;
     return;
@@ -299,9 +298,11 @@ function getLeagueCounts(matches) {
   return [...counts.entries()].sort((a, b) => b[1] - a[1]);
 }
 
-function renderSummary(matches) {
+function renderSummary(matches, meta = {}) {
   const leagueCount = getLeagueCounts(matches).length;
   const firstMinute = matches[0] ? getMinute(matches[0]) : "--";
+  const dailyRemaining = meta?.rateLimit?.dailyRemaining;
+  const cacheLabel = meta?.cached ? "CACHE" : "VIVO";
 
   dom.summaryStats.innerHTML = `
     <article class="stat-card">
@@ -317,8 +318,8 @@ function renderSummary(matches) {
       <span>Minuto top</span>
     </article>
     <article class="stat-card">
-      <strong>VIVO</strong>
-      <span>Estado</span>
+      <strong>${escapeHTML(dailyRemaining ?? cacheLabel)}</strong>
+      <span>${dailyRemaining == null ? "Estado" : "Peticiones"}</span>
     </article>
   `;
 }
@@ -352,6 +353,26 @@ function hasApiErrors(errors) {
   if (!errors) return false;
   if (Array.isArray(errors)) return errors.length > 0;
   return Object.keys(errors).length > 0;
+}
+
+function getApiErrorMessage(data) {
+  if (!data) {
+    return labels.routeError;
+  }
+
+  if (data?.error) {
+    return data.error;
+  }
+
+  if (!data?.errors || !hasApiErrors(data.errors)) {
+    return labels.invalidKey;
+  }
+
+  if (Array.isArray(data.errors)) {
+    return data.errors.join(" ");
+  }
+
+  return Object.values(data.errors).join(" ");
 }
 
 function getNavigationTarget(link) {
@@ -418,47 +439,47 @@ function setupNavigation() {
 }
 
 async function fetchLiveMatches() {
-  const response = await fetch(API_URL, {
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": API_HOST,
-      "x-rapidapi-key": API_KEY
-    }
-  });
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Mexico_City";
+  const url = new URL(API_URL, window.location.origin);
+  url.searchParams.set("timezone", timezone);
+
+  const response = await fetch(url);
+  const data = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(`Error ${response.status}: intenta de nuevo en unos minutos.`);
+    throw new Error(getApiErrorMessage(data) || `Error ${response.status}: intenta de nuevo en unos minutos.`);
   }
 
-  const data = await response.json();
-
-  if (hasApiErrors(data.errors)) {
-    throw new Error(labels.invalidKey);
+  if (hasApiErrors(data?.errors)) {
+    throw new Error(getApiErrorMessage(data));
   }
 
-  return Array.isArray(data.response) ? data.response : [];
+  return {
+    matches: Array.isArray(data?.response) ? data.response : [],
+    meta: data?.meta ?? {}
+  };
 }
 
 async function loadLiveMatches() {
   renderLoading();
 
-  if (!API_KEY.trim()) {
-    renderError(labels.missingKey);
+  if (window.location.protocol === "file:") {
+    renderError(labels.localFileError);
     setRefreshState(false);
     return;
   }
 
   try {
-    const matches = await fetchLiveMatches();
+    const { matches, meta } = await fetchLiveMatches();
 
     if (matches.length === 0) {
-      renderEmpty();
+      renderEmpty(meta);
       return;
     }
 
     renderMatches(matches);
     renderTicker(matches);
-    renderSummary(matches);
+    renderSummary(matches, meta);
     renderLeagues(matches);
   } catch (error) {
     renderError(error.message || labels.networkError);
